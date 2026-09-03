@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Room 🤫</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <audio id="laguLatar" src="Song/Stargazing.mp3" loop></audio>
+
+    <!-- 1. HALAMAN LOGIN -->
+    <div id="halamanLogin" class="card">
+        <h2 class="judul-login">Hayo, kamu siapa?! 🤨</h2>
+        <p class="pesan-awal">Ini area rahasia! Buktikan dengan masukkan tanggal lahirmu:</p>
+        <input type="password" id="inputPassword" placeholder="DDMMYYYY" class="input-pass">
+        <button id="tombolLogin" class="btn-surprise">Cek Kode 🕵🏻‍♀️</button>
+        <p id="pesanError" class="error-text tersembunyi">Eits, salah! Kamu bukan ADYNN ya? 🚨</p>
+    </div>
+
+    <!-- 2. HALAMAN TRANSISI -->
+    <div id="halamanTransisi" class="card tersembunyi">
+        <h2 class="judul-login">Yey, jawaban kamu benar! 🎉</h2>
+        <p class="pesan-awal">Selamat datang, ADYNN! Klik tombol di bawah untuk memutar lagu & kejutan ✨</p>
+        <button id="tombolPlay" class="btn-surprise">Putar Lagu & Buka Kado 🎵</button>
+    </div>
+
+    <!-- 3. HALAMAN UTAMA -->
+    <div id="halamanUtama" class="card tersembunyi">
+        <button id="btnGelap" class="btn-gelap">Gelapkan Layar 🌙</button>
+
+        <div class="header" style="margin-top: 15px;">
+            <span class="badge">17 September</span>
+            <h1>Selamat Ulang Tahun<br><span class="nama">ADYNN! 🎉</span></h1>
+            <p class="sub-judul">Welcome to 21 Club! ✨</p>
+        </div>
+
+        <!-- ⏱️ KAPSUL WAKTU -->
+        <div class="waktu-bersama">
+            <p class="waktu-judul">Kita udah bareng-bareng selama:</p>
+            <div id="counter" class="counter-box">Memuat waktu...</div>
+        </div>
+
+        <!-- 📸 GALERI POLAROID -->
+        <div class="galeri">
+            <div class="polaroid"><img src="Image/foto1.jpg" alt="Foto ADYNN 1"><p class="caption">Gemes banget! ❤️</p></div>
+            <div class="polaroid"><img src="Image/foto2.jpg" alt="Foto ADYNN 2"><p class="caption">Favorit najo! ✨</p></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 🌡️ MESIN PENGUKUR CINTA -->
+        <div class="love-meter-box">
+            <h3 class="section-title">Mesin Pengukur Cinta 🌡️</h3>
+            <p class="sub-text">Seberapa besar cinta Najo ke ADYNN?</p>
+            <button id="btnMeter" class="btn-kecil">Ukur Sekarang!</button>
+            <div class="progress-bg"><div id="progressFill" class="progress-fill">0%</div></div>
+            <p id="meterTeks" class="teks-respon tersembunyi" style="color:red; font-size:1.1rem;"></p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 🎁 KOTAK KADO VIRTUAL -->
+        <div class="kado-box">
+            <h3 class="section-title">Tap to Unbox! 🎁</h3>
+            <p class="sub-text">Klik kadonya 5 kali untuk buka hadiah utama!</p>
+            <div id="boxKado" class="box-kado">🎁</div>
+            <p id="kadoTeks" class="teks-respon tersembunyi" style="font-size:1.1rem;">🎉 Voucher Bebas Minta Apa Aja Sama Najo Seharian Full! 🎟️</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 💌 AMPLOP -->
+        <div class="amplop-box">
+            <h3 class="section-title">Open When... 💌</h3>
+            <div class="amplop-grid">
+                <button class="btn-amplop" onclick="bukaAmplop('kangen')">Lagi Kangen Najo 🥺</button>
+                <button class="btn-amplop" onclick="bukaAmplop('sedih')">Lagi Capek/Sedih 🌧️</button>
+                <button class="btn-amplop" onclick="bukaAmplop('peluk')">Butuh Pelukan 🤗</button>
+            </div>
+            <p id="pesanAmplop" class="teks-amplop tersembunyi"></p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 📝 COUPLE BUCKET LIST -->
+        <div class="bucket-box">
+            <h3 class="section-title">Our Bucket List 📝</h3>
+            <p class="sub-text">Mimpi kita ke depannya, centang kalau setuju!</p>
+            <ul class="bucket-list">
+                <li><input type="checkbox" id="bl1"><label for="bl1">Nonton konser artis favorit berdua</label></li>
+                <li><input type="checkbox" id="bl2"><label for="bl2">Late night drive sambil nyanyi kenceng</label></li>
+                <li><input type="checkbox" id="bl3"><label for="bl3">Masak bareng (walau dapur berantakan)</label></li>
+                <li><input type="checkbox" id="bl4"><label for="bl4">Lulus dan sukses bareng-bareng! 🎓✨</label></li>
+            </ul>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 🤔 MINI KUIS -->
+        <div class="kuis-box interaktif-box">
+            <h3 class="section-title" style="margin-bottom: 5px;">Mini Kuis 🤔</h3>
+            <p class="pertanyaan">Siapa yang ngambeknya paling lucu dan gemesin?</p>
+            <div class="btn-group" style="margin-top: 10px;">
+                <button class="btn-pilih kuis-btn" onclick="jawabKuis('najo')">Najo 👦🏻</button>
+                <button class="btn-pilih kuis-btn" style="background:#f0c420; color:#333;" onclick="jawabKuis('adynn')">ADYNN 👧🏻</button>
+            </div>
+            <p id="kuisTeks" class="teks-respon tersembunyi"></p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 🎈 BALON HARAPAN -->
+        <div class="harapan-box">
+            <h3 class="section-title">Make A Wish! 🎈</h3>
+            <input type="text" id="inputHarapan" class="input-harapan" placeholder="Harapanku adalah...">
+            <button id="btnTerbang" class="btn-kecil">Terbangkan Harapan ✨</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 🪙 KARTU GOSOK -->
+        <div class="gosok-box">
+            <h3 class="section-title">Kartu Gosok Spesial 🪙</h3>
+            <p class="sub-text">Gosok kotak abu-abu di bawah pakai jarimu!</p>
+            <div class="scratch-container">
+                <img src="Image/foto1.jpg" alt="Hadiah" class="scratch-image">
+                <div class="scratch-teks">Hadiahnya: Najo bakal selalu ada buat ADYNN! ❤️</div>
+                <canvas id="scratchCanvas" width="250" height="250"></canvas>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 🏃‍♂️ TOMBOL JAHIL -->
+        <div class="interaktif-box">
+            <p class="pertanyaan">ADYNN sayang banget nggak sama Najo? 🥺</p>
+            <div class="btn-group">
+                <button id="btnSayang" class="btn-pilih">SAYANG! ❤️</button>
+                <button id="btnNggak" class="btn-pilih btn-kabur">Nggak 😜</button>
+            </div>
+            <p id="teksResponSayang" class="teks-respon tersembunyi"></p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 🎵 SPOTIFY -->
+        <div class="spotify-box">
+            <h3 class="section-title">Lagu Memori Kita 🎧</h3>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5bsFmtfLLr7VSKSpxKXqoT?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ✉️ SURAT RAHASIA -->
+        <button id="btnSurat" class="btn-surprise" style="margin-top: 10px; margin-bottom:20px;">Buka Surat Rahasia 💌</button>
+    </div>
+
+    <!-- MODAL SURAT -->
+    <div id="modalSurat" class="modal tersembunyi">
+        <div class="modal-content">
+            <span class="close-btn" id="closeSurat">&times;</span>
+            <h2>Untuk ADYNN ❤️</h2>
+            <p class="isi-surat">
+                Selamat ulang tahun yang ke-21, sayang!<br><br>
+                Maaf kalau najo kadang nyebelin, tapi asal kamu tau, najo sayang banget sama kamu. Semoga di umur yang baru ini, kita bisa terus sama-sama.<br><br>
+                I love you more than words can say! ✨
+            </p>
+            <p class="ttd-surat">- Najo</p>
+        </div>
+    </div>
+
+    <div id="animasiContainer"></div>
+    <script src="script.js"></script>
+</body>
+</html>
