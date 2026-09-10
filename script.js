@@ -9,6 +9,19 @@ const pesanError = document.getElementById('pesanError');
 const lagu = document.getElementById('laguLatar');
 const animasiContainer = document.getElementById('animasiContainer');
 
+// --- LOGIKA KEYPAD ANGKA CUSTOM ---
+function tekanAngka(angka) {
+    if (inputPassword.value.length < 8) {
+        inputPassword.value += angka;
+    }
+}
+function hapusAngka() {
+    inputPassword.value = inputPassword.value.slice(0, -1);
+}
+function hapusSemua() {
+    inputPassword.value = '';
+}
+
 // --- 1. LOGIN & PLAY LAGU ---
 tombolLogin.addEventListener('click', function() {
     if (inputPassword.value === '17092005') {
@@ -34,10 +47,10 @@ let intervalBintang;
 btnGelap.addEventListener('click', function() {
     document.body.classList.toggle('dark-mode');
     if (document.body.classList.contains('dark-mode')) {
-        btnGelap.innerText = 'Kembali ke Siang ☀️';
+        btnGelap.innerHTML = '<i class="fa-solid fa-sun"></i> Mode Siang';
         intervalBintang = setInterval(buatBintang, 300);
     } else {
-        btnGelap.innerText = 'Gelapkan Layar 🌙';
+        btnGelap.innerHTML = '<i class="fa-solid fa-moon"></i> Mode Malam';
         clearInterval(intervalBintang);
         document.querySelectorAll('.bintang').forEach(b => b.remove());
     }
@@ -63,7 +76,7 @@ setInterval(function() {
     const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
     const detik = Math.floor((selisih % (1000 * 60)) / 1000);
-    document.getElementById('counter').innerHTML = `${hari} Hari, ${jam} Jam, ${menit} Menit, ${detik} Detik ❤️`;
+    document.getElementById('counter').innerHTML = `${hari} Hari, ${jam} Jam, ${menit} Menit, ${detik} Detik <i class="fa-solid fa-heart" style="color:#ff3385;"></i>`;
 }, 1000);
 
 // --- 4. LOVE METER (PENGUKUR CINTA) ---
@@ -84,12 +97,11 @@ btnMeter.addEventListener('click', function() {
             progressFill.style.width = '100%';
             progressFill.innerText = '100%';
             
-            // Kejutan 3000%
             setTimeout(() => {
                 document.querySelector('.love-meter-box').classList.add('meledak');
                 progressFill.style.width = '100%'; 
                 progressFill.innerText = '3000% !!!';
-                meterTeks.innerHTML = "ERROR: Kapasitas mesin meledak! 💥<br>Cinta Najo terlalu besar dan gak bisa dihitung! ❤️";
+                meterTeks.innerHTML = '<i class="fa-solid fa-bomb"></i> ERROR: Kapasitas mesin meledak!<br>Cinta Najo terlalu besar dan gak bisa dihitung! <i class="fa-solid fa-heart"></i>';
                 meterTeks.classList.remove('tersembunyi');
             }, 500);
         } else {
@@ -105,16 +117,16 @@ const kadoTeks = document.getElementById('kadoTeks');
 let klikKado = 0;
 
 boxKado.addEventListener('click', function() {
-    if (klikKado >= 5) return; // Udah kebuka
+    if (klikKado >= 5) return; 
     
     klikKado++;
     boxKado.classList.remove('shake');
-    void boxKado.offsetWidth; // trigger reflow
+    void boxKado.offsetWidth; 
     boxKado.classList.add('shake');
     
     if (klikKado === 5) {
         setTimeout(() => {
-            boxKado.innerText = '🎉';
+            boxKado.innerHTML = '<i class="fa-solid fa-box-open"></i>';
             boxKado.classList.remove('shake');
             kadoTeks.classList.remove('tersembunyi');
             for(let i=0; i<15; i++) { setTimeout(buatConfetti, i*100); }
@@ -124,7 +136,11 @@ boxKado.addEventListener('click', function() {
 
 function buatConfetti() {
     const confetti = document.createElement('div');
-    confetti.innerText = ['🎉', '🎊', '✨', '💸'][Math.floor(Math.random()*4)];
+    const iconList = ['<i class="fa-solid fa-star"></i>', '<i class="fa-solid fa-heart"></i>', '<i class="fa-solid fa-music"></i>', '<i class="fa-solid fa-ticket"></i>'];
+    const colorList = ['#ff4d94', '#f0c420', '#4d94ff', '#33ff85'];
+    
+    confetti.innerHTML = iconList[Math.floor(Math.random() * iconList.length)];
+    confetti.style.color = colorList[Math.floor(Math.random() * colorList.length)];
     confetti.style.position = 'fixed';
     confetti.style.left = Math.random() * 100 + 'vw';
     confetti.style.top = '-10vh';
@@ -158,9 +174,9 @@ function jawabKuis(jawaban) {
     const kuisTeks = document.getElementById('kuisTeks');
     kuisTeks.classList.remove('tersembunyi');
     if (jawaban === 'adynn') {
-        kuisTeks.innerHTML = "Bener banget! Ngambeknya ADYNN itu gemesin pengen gigit! 😆❤️";
+        kuisTeks.innerHTML = "<i class="fa-solid fa-circle-check"></i> Bener banget! Ngambeknya ADYNN itu gemesin pengen gigit! <i class="fa-solid fa-face-grin-hearts"></i>";
     } else {
-        kuisTeks.innerHTML = "Dih masa sih Najo? Coba ngaca dulu wleee 😜";
+        kuisTeks.innerHTML = "<i class="fa-solid fa-circle-xmark"></i> Dih masa sih Najo? Coba ngaca dulu wleee <i class="fa-solid fa-face-grin-tongue-wink"></i>";
     }
 }
 
@@ -168,9 +184,9 @@ function jawabKuis(jawaban) {
 function bukaAmplop(kondisi) {
     const pesan = document.getElementById('pesanAmplop');
     pesan.classList.remove('tersembunyi');
-    if (kondisi === 'kangen') pesan.innerHTML = "Jangan kangen dong! Langsung chat atau telpon najo aja sekarang, okee? 🥺❤️";
-    else if (kondisi === 'sedih') pesan.innerHTML = "Hei orang paling hebat, gapapa kok capek. Najo selalu di sini buat dengerin ceritamu. You did great! ✨";
-    else if (kondisi === 'peluk') pesan.innerHTML = "*Sending virtual hugs!* 🤗🤗 Nanti ketemu najo peluk beneran ya!";
+    if (kondisi === 'kangen') pesan.innerHTML = "Jangan kangen dong! Langsung chat atau telpon najo aja sekarang, okee? <i class="fa-solid fa-heart"></i>";
+    else if (kondisi === 'sedih') pesan.innerHTML = "Hei orang paling hebat, gapapa kok capek. Najo selalu di sini buat dengerin ceritamu. You did great! <i class="fa-solid fa-star"></i>";
+    else if (kondisi === 'peluk') pesan.innerHTML = "*Sending virtual hugs!* <i class="fa-solid fa-hands-holding-child"></i> Nanti ketemu najo peluk beneran ya!";
 }
 
 // --- 9. BALON HARAPAN ---
@@ -179,11 +195,11 @@ document.getElementById('btnTerbang').addEventListener('click', function() {
     if (input.value.trim() === '') return alert("Tulis harapanmu dulu dong!");
     const balon = document.createElement('div');
     balon.classList.add('balon-terbang');
-    balon.innerText = "🎈 " + input.value;
+    balon.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ' + input.value;
     balon.style.left = (Math.random() * 50 + 10) + 'vw';
     animasiContainer.appendChild(balon);
     input.value = '';
-    setTimeout(() => balon.remove(), 5000);
+    setTimeout(() => balon.remove(), 6000);
 });
 
 // --- 10. KARTU GOSOK DIGITAL ---
@@ -191,7 +207,7 @@ function initScratchCard() {
     const canvas = document.getElementById('scratchCanvas');
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#a0a0a0'; ctx.fillRect(0, 0, 250, 250);
-    ctx.font = 'bold 20px Arial'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center'; ctx.fillText('GOSOK DI SINI! 🪙', 125, 125);
+    ctx.font = '900 20px Poppins'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center'; ctx.fillText('GOSOK DI SINI!', 125, 125);
     let isDrawing = false;
     function hapusCanvas(e) {
         if (!isDrawing) return; e.preventDefault();
@@ -216,7 +232,7 @@ function kabur() {
 btnNggak.addEventListener('mouseenter', kabur);
 btnNggak.addEventListener('touchstart', (e) => { e.preventDefault(); kabur(); });
 document.getElementById('btnSayang').addEventListener('click', function() {
-    document.getElementById('teksResponSayang').innerText = "YAY! Najo juga sayang banget sama ADYNN! ❤️🥰";
+    document.getElementById('teksResponSayang').innerHTML = "YAY! Najo juga sayang banget sama ADYNN! <i class="fa-solid fa-heart"></i>";
     document.getElementById('teksResponSayang').classList.remove('tersembunyi');
     btnNggak.style.display = 'none';
 });
@@ -225,14 +241,24 @@ document.getElementById('btnSayang').addEventListener('click', function() {
 document.getElementById('btnSurat').addEventListener('click', () => document.getElementById('modalSurat').classList.remove('tersembunyi'));
 document.getElementById('closeSurat').addEventListener('click', () => document.getElementById('modalSurat').classList.add('tersembunyi'));
 
-// --- 13. ANIMASI BACKGROUND CONTINUOUS ---
+// --- 13. ANIMASI BACKGROUND ICONS CONTINUOUS ---
 function mulaiAnimasiLatar() {
+    const iconList = [
+        '<i class="fa-solid fa-heart"></i>', 
+        '<i class="fa-solid fa-star"></i>', 
+        '<i class="fa-solid fa-moon"></i>', 
+        '<i class="fa-solid fa-music"></i>', 
+        '<i class="fa-solid fa-gem"></i>'
+    ];
+    const colorList = ['#ff4d94', '#ff75a0', '#ffd1dc', '#f0c420', '#fff'];
+
     setInterval(() => {
         const item = document.createElement('div');
         item.classList.add('floating-item');
-        item.innerText = ['❤️', '💖', '💕', '✨', '⭐', '🌟', '💫'][Math.floor(Math.random() * 7)];
+        item.innerHTML = iconList[Math.floor(Math.random() * iconList.length)];
+        item.style.color = colorList[Math.floor(Math.random() * colorList.length)];
         item.style.left = Math.random() * 100 + 'vw';
-        item.style.fontSize = (Math.random() * 15 + 10) + 'px';
+        item.style.fontSize = (Math.random() * 15 + 12) + 'px';
         item.style.animationDuration = (Math.random() * 4 + 5) + 's';
         animasiContainer.appendChild(item);
         setTimeout(() => item.remove(), 9000);

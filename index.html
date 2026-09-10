@@ -2,81 +2,104 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secret Room 🤫</title>
+    <!-- Meta tag diperbarui agar web tidak nge-zoom saat keypad ditekan di HP -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Secret Room</title>
+    <!-- Import Google Fonts (Poppins) & FontAwesome (Icons) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <audio id="laguLatar" src="Song/Stargazing.mp3" loop></audio>
 
-    <!-- 1. HALAMAN LOGIN -->
-    <div id="halamanLogin" class="card">
-        <h2 class="judul-login">Hayo, kamu siapa?! 🤨</h2>
-        <p class="pesan-awal">Ini area rahasia! Buktikan dengan masukkan tanggal lahirmu:</p>
-        <input type="password" id="inputPassword" placeholder="DDMMYYYY" class="input-pass">
-        <button id="tombolLogin" class="btn-surprise">Cek Kode 🕵🏻‍♀️</button>
-        <p id="pesanError" class="error-text tersembunyi">Eits, salah! Kamu bukan ADYNN ya? 🚨</p>
+    <!-- 1. HALAMAN LOGIN DENGAN KEYPAD -->
+    <div id="halamanLogin" class="card glass">
+        <h2 class="judul-login">Hayo, kamu siapa?! <i class="fa-solid fa-user-secret"></i></h2>
+        <p class="pesan-awal">Area rahasia! Masukkan tanggal lahirmu (DDMMYYYY):</p>
+        
+        <!-- Input Password dibuat Readonly agar keyboard bawaan HP tidak muncul -->
+        <input type="password" id="inputPassword" placeholder="********" class="input-pass" readonly>
+        
+        <!-- Keypad Angka Custom -->
+        <div class="keypad">
+            <button class="key-btn" onclick="tekanAngka('1')">1</button>
+            <button class="key-btn" onclick="tekanAngka('2')">2</button>
+            <button class="key-btn" onclick="tekanAngka('3')">3</button>
+            <button class="key-btn" onclick="tekanAngka('4')">4</button>
+            <button class="key-btn" onclick="tekanAngka('5')">5</button>
+            <button class="key-btn" onclick="tekanAngka('6')">6</button>
+            <button class="key-btn" onclick="tekanAngka('7')">7</button>
+            <button class="key-btn" onclick="tekanAngka('8')">8</button>
+            <button class="key-btn" onclick="tekanAngka('9')">9</button>
+            <button class="key-btn hapus-all" onclick="hapusSemua()"><i class="fa-solid fa-rotate-right"></i></button>
+            <button class="key-btn" onclick="tekanAngka('0')">0</button>
+            <button class="key-btn hapus" onclick="hapusAngka()"><i class="fa-solid fa-delete-left"></i></button>
+        </div>
+
+        <button id="tombolLogin" class="btn-surprise">Cek Kode <i class="fa-solid fa-unlock-keyhole"></i></button>
+        <p id="pesanError" class="error-text tersembunyi"><i class="fa-solid fa-triangle-exclamation"></i> Eits, salah! Kamu bukan ADYNN ya?</p>
     </div>
 
     <!-- 2. HALAMAN TRANSISI -->
-    <div id="halamanTransisi" class="card tersembunyi">
-        <h2 class="judul-login">Yey, jawaban kamu benar! 🎉</h2>
-        <p class="pesan-awal">Selamat datang, ADYNN! Klik tombol di bawah untuk memutar lagu & kejutan ✨</p>
-        <button id="tombolPlay" class="btn-surprise">Putar Lagu & Buka Kado 🎵</button>
+    <div id="halamanTransisi" class="card glass tersembunyi">
+        <h2 class="judul-login">Akses Diterima! <i class="fa-solid fa-circle-check"></i></h2>
+        <p class="pesan-awal">Selamat datang, ADYNN! Klik tombol di bawah untuk memutar lagu & kejutan.</p>
+        <button id="tombolPlay" class="btn-surprise">Putar Lagu & Buka Kado <i class="fa-solid fa-music"></i></button>
     </div>
 
     <!-- 3. HALAMAN UTAMA -->
-    <div id="halamanUtama" class="card tersembunyi">
-        <button id="btnGelap" class="btn-gelap">Gelapkan Layar 🌙</button>
+    <div id="halamanUtama" class="card glass tersembunyi">
+        <button id="btnGelap" class="btn-gelap"><i class="fa-solid fa-moon"></i> Mode Malam</button>
 
         <div class="header" style="margin-top: 15px;">
-            <span class="badge">17 September</span>
-            <h1>Selamat Ulang Tahun<br><span class="nama">ADYNN! 🎉</span></h1>
-            <p class="sub-judul">Welcome to 21 Club! ✨</p>
+            <span class="badge"><i class="fa-solid fa-calendar-day"></i> 17 September</span>
+            <h1 class="teks-gradien">Selamat Ulang Tahun<br><span class="nama">ADYNN! <i class="fa-solid fa-wand-magic-sparkles"></i></span></h1>
+            <p class="sub-judul">Welcome to 21 Club!</p>
         </div>
 
         <!-- ⏱️ KAPSUL WAKTU -->
-        <div class="waktu-bersama">
-            <p class="waktu-judul">Kita udah bareng-bareng selama:</p>
+        <div class="waktu-bersama glass-panel">
+            <p class="waktu-judul"><i class="fa-solid fa-hourglass-half"></i> Kita udah bareng selama:</p>
             <div id="counter" class="counter-box">Memuat waktu...</div>
         </div>
 
-        <!-- 📸 GALERI POLAROID -->
+        <!-- 📸 GALERI POLAROID HD -->
         <div class="galeri">
-            <div class="polaroid"><img src="Image/foto1.jpg" alt="Foto ADYNN 1"><p class="caption">Gemes banget! ❤️</p></div>
-            <div class="polaroid"><img src="Image/foto2.jpg" alt="Foto ADYNN 2"><p class="caption">Favorit najo! ✨</p></div>
+            <div class="polaroid"><img src="Image/foto2.jpeg" alt="Foto ADYNN 1"><p class="caption">Gemes banget! <i class="fa-solid fa-heart"></i></p></div>
+            <div class="polaroid"><img src="Image/foto3.jpeg" alt="Foto ADYNN 2"><p class="caption">Favorit najo! <i class="fa-solid fa-star"></i></p></div>
         </div>
 
         <div class="divider"></div>
 
         <!-- 🌡️ MESIN PENGUKUR CINTA -->
-        <div class="love-meter-box">
-            <h3 class="section-title">Mesin Pengukur Cinta 🌡️</h3>
+        <div class="love-meter-box glass-panel">
+            <h3 class="section-title"><i class="fa-solid fa-temperature-arrow-up"></i> Mesin Pengukur Cinta</h3>
             <p class="sub-text">Seberapa besar cinta Najo ke ADYNN?</p>
-            <button id="btnMeter" class="btn-kecil">Ukur Sekarang!</button>
+            <button id="btnMeter" class="btn-kecil">Ukur Sekarang! <i class="fa-solid fa-bolt"></i></button>
             <div class="progress-bg"><div id="progressFill" class="progress-fill">0%</div></div>
-            <p id="meterTeks" class="teks-respon tersembunyi" style="color:red; font-size:1.1rem;"></p>
+            <p id="meterTeks" class="teks-respon tersembunyi" style="color:#ff0033; font-size:1.1rem;"></p>
         </div>
 
         <div class="divider"></div>
 
         <!-- 🎁 KOTAK KADO VIRTUAL -->
-        <div class="kado-box">
-            <h3 class="section-title">Tap to Unbox! 🎁</h3>
+        <div class="kado-box glass-panel">
+            <h3 class="section-title"><i class="fa-solid fa-box"></i> Tap to Unbox!</h3>
             <p class="sub-text">Klik kadonya 5 kali untuk buka hadiah utama!</p>
-            <div id="boxKado" class="box-kado">🎁</div>
-            <p id="kadoTeks" class="teks-respon tersembunyi" style="font-size:1.1rem;">🎉 Voucher Bebas Minta Apa Aja Sama Najo Seharian Full! 🎟️</p>
+            <div id="boxKado" class="box-kado"><i class="fa-solid fa-gift"></i></div>
+            <p id="kadoTeks" class="teks-respon tersembunyi" style="font-size:1.1rem;"><i class="fa-solid fa-ticket"></i> Voucher Bebas Minta Apa Aja Sama Najo Seharian Full!</p>
         </div>
 
         <div class="divider"></div>
 
         <!-- 💌 AMPLOP -->
         <div class="amplop-box">
-            <h3 class="section-title">Open When... 💌</h3>
+            <h3 class="section-title"><i class="fa-solid fa-envelope-open-text"></i> Open When...</h3>
             <div class="amplop-grid">
-                <button class="btn-amplop" onclick="bukaAmplop('kangen')">Lagi Kangen Najo 🥺</button>
-                <button class="btn-amplop" onclick="bukaAmplop('sedih')">Lagi Capek/Sedih 🌧️</button>
-                <button class="btn-amplop" onclick="bukaAmplop('peluk')">Butuh Pelukan 🤗</button>
+                <button class="btn-amplop" onclick="bukaAmplop('kangen')"><i class="fa-solid fa-face-sad-tear"></i> Lagi Kangen Najo</button>
+                <button class="btn-amplop" onclick="bukaAmplop('sedih')"><i class="fa-solid fa-cloud-rain"></i> Lagi Capek/Sedih</button>
+                <button class="btn-amplop" onclick="bukaAmplop('peluk')"><i class="fa-solid fa-hands-holding-child"></i> Butuh Pelukan</button>
             </div>
             <p id="pesanAmplop" class="teks-amplop tersembunyi"></p>
         </div>
@@ -84,26 +107,26 @@
         <div class="divider"></div>
 
         <!-- 📝 COUPLE BUCKET LIST -->
-        <div class="bucket-box">
-            <h3 class="section-title">Our Bucket List 📝</h3>
+        <div class="bucket-box glass-panel">
+            <h3 class="section-title"><i class="fa-solid fa-list-check"></i> Our Bucket List</h3>
             <p class="sub-text">Mimpi kita ke depannya, centang kalau setuju!</p>
             <ul class="bucket-list">
                 <li><input type="checkbox" id="bl1"><label for="bl1">Nonton konser artis favorit berdua</label></li>
                 <li><input type="checkbox" id="bl2"><label for="bl2">Late night drive sambil nyanyi kenceng</label></li>
                 <li><input type="checkbox" id="bl3"><label for="bl3">Masak bareng (walau dapur berantakan)</label></li>
-                <li><input type="checkbox" id="bl4"><label for="bl4">Lulus dan sukses bareng-bareng! 🎓✨</label></li>
+                <li><input type="checkbox" id="bl4"><label for="bl4">Lulus dan sukses bareng-bareng! <i class="fa-solid fa-graduation-cap"></i></label></li>
             </ul>
         </div>
 
         <div class="divider"></div>
 
         <!-- 🤔 MINI KUIS -->
-        <div class="kuis-box interaktif-box">
-            <h3 class="section-title" style="margin-bottom: 5px;">Mini Kuis 🤔</h3>
+        <div class="kuis-box interaktif-box glass-panel">
+            <h3 class="section-title" style="margin-bottom: 5px;"><i class="fa-solid fa-circle-question"></i> Mini Kuis</h3>
             <p class="pertanyaan">Siapa yang ngambeknya paling lucu dan gemesin?</p>
             <div class="btn-group" style="margin-top: 10px;">
-                <button class="btn-pilih kuis-btn" onclick="jawabKuis('najo')">Najo 👦🏻</button>
-                <button class="btn-pilih kuis-btn" style="background:#f0c420; color:#333;" onclick="jawabKuis('adynn')">ADYNN 👧🏻</button>
+                <button class="btn-pilih kuis-btn" onclick="jawabKuis('najo')"><i class="fa-solid fa-user-tie"></i> Najo</button>
+                <button class="btn-pilih kuis-btn" style="background:#f0c420; color:#333;" onclick="jawabKuis('adynn')"><i class="fa-solid fa-user"></i> ADYNN</button>
             </div>
             <p id="kuisTeks" class="teks-respon tersembunyi"></p>
         </div>
@@ -111,21 +134,21 @@
         <div class="divider"></div>
 
         <!-- 🎈 BALON HARAPAN -->
-        <div class="harapan-box">
-            <h3 class="section-title">Make A Wish! 🎈</h3>
+        <div class="harapan-box glass-panel">
+            <h3 class="section-title"><i class="fa-solid fa-paper-plane"></i> Make A Wish!</h3>
             <input type="text" id="inputHarapan" class="input-harapan" placeholder="Harapanku adalah...">
-            <button id="btnTerbang" class="btn-kecil">Terbangkan Harapan ✨</button>
+            <button id="btnTerbang" class="btn-kecil">Terbangkan Harapan <i class="fa-solid fa-wind"></i></button>
         </div>
 
         <div class="divider"></div>
 
         <!-- 🪙 KARTU GOSOK -->
         <div class="gosok-box">
-            <h3 class="section-title">Kartu Gosok Spesial 🪙</h3>
+            <h3 class="section-title"><i class="fa-solid fa-coins"></i> Kartu Gosok Spesial</h3>
             <p class="sub-text">Gosok kotak abu-abu di bawah pakai jarimu!</p>
-            <div class="scratch-container">
+            <div class="scratch-container hd-shadow">
                 <img src="Image/foto1.jpg" alt="Hadiah" class="scratch-image">
-                <div class="scratch-teks">Hadiahnya: Najo bakal selalu ada buat ADYNN! ❤️</div>
+                <div class="scratch-teks">Hadiahnya: Najo bakal selalu ada buat ADYNN! <i class="fa-solid fa-heart"></i></div>
                 <canvas id="scratchCanvas" width="250" height="250"></canvas>
             </div>
         </div>
@@ -133,11 +156,11 @@
         <div class="divider"></div>
 
         <!-- 🏃‍♂️ TOMBOL JAHIL -->
-        <div class="interaktif-box">
-            <p class="pertanyaan">ADYNN sayang banget nggak sama Najo? 🥺</p>
+        <div class="interaktif-box glass-panel">
+            <p class="pertanyaan">ADYNN sayang banget nggak sama Najo? <i class="fa-solid fa-face-grin-stars"></i></p>
             <div class="btn-group">
-                <button id="btnSayang" class="btn-pilih">SAYANG! ❤️</button>
-                <button id="btnNggak" class="btn-pilih btn-kabur">Nggak 😜</button>
+                <button id="btnSayang" class="btn-pilih">SAYANG! <i class="fa-solid fa-heart"></i></button>
+                <button id="btnNggak" class="btn-pilih btn-kabur">Nggak <i class="fa-solid fa-face-grin-tongue"></i></button>
             </div>
             <p id="teksResponSayang" class="teks-respon tersembunyi"></p>
         </div>
@@ -146,25 +169,25 @@
 
         <!-- 🎵 SPOTIFY -->
         <div class="spotify-box">
-            <h3 class="section-title">Lagu Memori Kita 🎧</h3>
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5bsFmtfLLr7VSKSpxKXqoT?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <h3 class="section-title"><i class="fa-solid fa-headphones"></i> Lagu Memori Kita</h3>
+            <iframe style="border-radius:12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);" src="https://open.spotify.com/embed/playlist/5bsFmtfLLr7VSKSpxKXqoT?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
 
         <div class="divider"></div>
 
         <!-- ✉️ SURAT RAHASIA -->
-        <button id="btnSurat" class="btn-surprise" style="margin-top: 10px; margin-bottom:20px;">Buka Surat Rahasia 💌</button>
+        <button id="btnSurat" class="btn-surprise" style="margin-top: 10px; margin-bottom:20px;">Buka Surat Rahasia <i class="fa-solid fa-envelope"></i></button>
     </div>
 
     <!-- MODAL SURAT -->
     <div id="modalSurat" class="modal tersembunyi">
-        <div class="modal-content">
+        <div class="modal-content glass">
             <span class="close-btn" id="closeSurat">&times;</span>
-            <h2>Untuk ADYNN ❤️</h2>
+            <h2>Untuk ADYNN <i class="fa-solid fa-heart"></i></h2>
             <p class="isi-surat">
                 Selamat ulang tahun yang ke-21, sayang!<br><br>
                 Maaf kalau najo kadang nyebelin, tapi asal kamu tau, najo sayang banget sama kamu. Semoga di umur yang baru ini, kita bisa terus sama-sama.<br><br>
-                I love you more than words can say! ✨
+                I love you more than words can say! <i class="fa-solid fa-star"></i>
             </p>
             <p class="ttd-surat">- Najo</p>
         </div>
