@@ -2,26 +2,123 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta tag diperbarui agar web tidak nge-zoom saat keypad ditekan di HP -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Secret Room</title>
-    <!-- Import Google Fonts (Poppins) & FontAwesome (Icons) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <!-- Link Icon FontAwesome yang sudah diperkuat -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    
+    <style>
+        /* ================= SEMUA CSS GABUNG DI SINI ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #ffe6f0 0%, #fff0f5 50%, #ffd1dc 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px 15px; overflow-x: hidden; transition: background 1s ease; }
+        
+        body.dark-mode { background: linear-gradient(135deg, #0b0c10 0%, #1f2833 100%); }
+        body.dark-mode .glass { background: rgba(30, 30, 30, 0.7); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: #eee; }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode .nama, body.dark-mode .pertanyaan { color: #fff; }
+        body.dark-mode .sub-judul, body.dark-mode .sub-text, body.dark-mode .waktu-judul, body.dark-mode .pesan-awal { color: #ccc; }
+        body.dark-mode .glass-panel { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); }
+        body.dark-mode .counter-box, body.dark-mode .bucket-list label { color: #ddd; }
+        body.dark-mode .polaroid { background: #222; }
+        body.dark-mode .caption { color: #ddd; }
+        body.dark-mode .btn-gelap { background: #f0c420; color: #333; }
+
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 24px; padding: 35px 25px; width: 100%; max-width: 500px; box-shadow: 0 15px 35px rgba(255, 105, 180, 0.15); border: 1px solid rgba(255, 255, 255, 0.6); text-align: center; position: relative; transition: all 0.5s ease; }
+        .glass-panel { background: rgba(255, 240, 245, 0.6); backdrop-filter: blur(5px); padding: 18px; border-radius: 18px; border: 1px solid rgba(255, 179, 217, 0.4); margin: 20px 0; }
+        
+        .teks-gradien { background: linear-gradient(45deg, #ff3385, #ff75a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .badge { background: linear-gradient(45deg, #ffe6f0, #ffb3d9); color: #ff3385; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; display: inline-block; margin-bottom: 12px; }
+        h1 { font-size: 1.6rem; line-height: 1.3; font-weight: 800; }
+        .nama { font-size: 2.2rem; font-weight: 800; }
+        .sub-judul { color: #888; font-size: 0.95rem; margin-top: 5px; margin-bottom: 20px; }
+        .judul-login { font-size: 1.5rem; color: #ff3385; margin-bottom: 10px; font-weight: 800; }
+        .pesan-awal { font-size: 0.95rem; line-height: 1.6; color: #555; margin-bottom: 20px; }
+        .section-title { font-size: 1.15rem; color: #ff3385; margin-bottom: 15px; font-weight: 800; }
+        .sub-text { font-size: 0.85rem; color: #777; margin-top: -10px; margin-bottom: 15px; }
+        .divider { height: 2px; background: linear-gradient(to right, transparent, rgba(255, 179, 217, 0.5), transparent); margin: 25px 0; }
+        .tersembunyi { display: none !important; }
+
+        .input-pass, .input-harapan { width: 100%; max-width: 250px; padding: 15px; margin: 0 auto 20px; border: 2px solid #ffb3d9; border-radius: 15px; font-size: 1.2rem; font-weight: 800; text-align: center; outline: none; background: rgba(255,255,255,0.9); letter-spacing: 3px; color: #ff3385; transition: 0.3s; }
+        .input-harapan { letter-spacing: normal; font-size: 0.95rem; font-weight: 600; color: #444; }
+        
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 260px; margin: 0 auto 25px; }
+        .key-btn { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px); border: 1px solid rgba(255, 179, 217, 0.8); color: #ff3385; font-size: 1.4rem; font-weight: 800; padding: 15px 0; border-radius: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(255, 105, 180, 0.1); }
+        .key-btn:active { transform: scale(0.9); background: #ff4d94; color: white; }
+        .key-btn.hapus { background: rgba(255, 77, 148, 0.1); color: #ff0033; }
+        .key-btn.hapus-all { font-size: 1.1rem; color: #888; }
+
+        .btn-surprise { background: linear-gradient(45deg, #ff4d94, #ff75a0); color: white; font-size: 1rem; font-weight: 800; padding: 15px 28px; border: none; border-radius: 30px; cursor: pointer; width: 100%; max-width: 320px; transition: 0.3s; }
+        .btn-surprise:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(255, 77, 148, 0.5); }
+        .btn-kecil { background: linear-gradient(45deg, #ffb3d9, #ff75a0); color: #fff; padding: 10px 20px; border: none; border-radius: 20px; cursor: pointer; font-weight: 800; transition: 0.2s; }
+        .btn-gelap { position: absolute; top: 15px; right: 15px; background: #333; color: white; border: none; padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; font-weight: 600; z-index: 10; }
+        .error-text { color: #ff0033; font-size: 0.9rem; font-weight: 800; margin-top: 15px; background-color: #ffe6e6; padding: 12px; border-radius: 12px; }
+        .teks-respon { margin-top: 15px; font-weight: 800; color: #ff0066; font-size: 0.95rem; animation: popIn 0.3s; }
+
+        .waktu-judul { font-size: 0.95rem; color: #ff4d94; font-weight: 800; margin-bottom: 8px; }
+        .counter-box { font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px; }
+        .galeri { display: flex; justify-content: center; gap: 18px; margin: 20px 0; flex-wrap: wrap; }
+        .polaroid { background: white; padding: 12px 12px 18px 12px; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); width: 145px; transform: rotate(-4deg); transition: 0.3s; border: 1px solid #eee; }
+        .polaroid:nth-child(2) { transform: rotate(5deg); }
+        .polaroid img { width: 100%; height: 130px; object-fit: cover; border-radius: 4px; }
+        .caption { font-size: 0.85rem; color: #444; margin-top: 12px; font-weight: 600; }
+
+        .progress-bg { background: rgba(0,0,0,0.05); width: 100%; height: 28px; border-radius: 20px; margin-top: 15px; overflow: hidden; position: relative; border: 1px solid rgba(255, 179, 217, 0.5); }
+        .progress-fill { background: linear-gradient(90deg, #ff4d94, #ff0000); height: 100%; width: 0%; border-radius: 20px; display: flex; justify-content: center; align-items: center; color: white; font-weight: 800; font-size: 0.85rem; transition: width 0.1s linear; }
+
+        .box-kado { font-size: 4.5rem; cursor: pointer; display: inline-block; transition: 0.1s; user-select: none; color: #ff3385; }
+        .shake { animation: getarKado 0.2s; }
+        @keyframes getarKado { 0% { transform: rotate(0deg); } 25% { transform: rotate(-15deg); } 50% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } 100% { transform: rotate(0deg); } }
+        .meledak { animation: meledakAnim 0.5s infinite; }
+        @keyframes meledakAnim { 0% { transform: translateX(0) scale(1); } 25% { transform: translateX(-5px) scale(1.02); } 50% { transform: translateX(5px) scale(1.05); } 100% { transform: translateX(0) scale(1); } }
+
+        .bucket-list { list-style: none; text-align: left; }
+        .bucket-list li { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; }
+        .bucket-list input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: #ff3385; cursor: pointer; }
+        .bucket-list label { color: #444; font-size: 0.95rem; cursor: pointer; transition: 0.3s; font-weight: 600; }
+        .dicoret { text-decoration: line-through; color: #aaa !important; font-style: italic; }
+
+        .amplop-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
+        .btn-amplop { background: rgba(255,255,255,0.8); border: 2px solid #ffb3d9; padding: 14px; border-radius: 12px; color: #ff3385; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .teks-amplop { background: rgba(255, 235, 240, 0.8); padding: 15px; border-radius: 15px; font-style: italic; color: #ff0066; font-weight: 800; animation: popIn 0.3s; border: 1px dashed #ffb3d9; }
+
+        .scratch-container { position: relative; width: 250px; height: 250px; margin: 0 auto; border-radius: 15px; overflow: hidden; }
+        .scratch-image { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        .scratch-teks { position: absolute; bottom: 10px; left: 0; width: 100%; background: rgba(255,255,255,0.9); color: #ff0066; font-weight: 800; font-size: 0.85rem; padding: 8px 5px; }
+        #scratchCanvas { position: absolute; top: 0; left: 0; cursor: pointer; }
+
+        .pertanyaan { font-weight: 800; color: #ff3385; margin-bottom: 15px; font-size: 1.05rem; }
+        .btn-group { display: flex; justify-content: center; gap: 15px; min-height: 45px; align-items: center; }
+        .btn-pilih { padding: 12px 22px; border: none; border-radius: 25px; font-weight: 800; cursor: pointer; }
+        #btnSayang { background: linear-gradient(45deg, #ff4d94, #ff0066); color: white; }
+        .btn-kabur { background: #e0e0e0; color: #555; }
+
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { padding: 35px; max-width: 400px; width: 90%; background: rgba(255, 255, 255, 0.95); border-radius: 20px; text-align: left; position: relative; animation: popIn 0.4s; }
+        .close-btn { position: absolute; top: 12px; right: 20px; font-size: 2rem; color: #ff4d94; cursor: pointer; font-weight: bold; }
+        .modal-content h2 { color: #ff3385; text-align: center; font-weight: 800; margin-bottom: 15px; }
+        .isi-surat { font-size: 0.95rem; line-height: 1.6; color: #444; font-weight: 600; }
+        .ttd-surat { margin-top: 20px; font-weight: 800; color: #ff3385; text-align: right; }
+
+        .floating-item { position: fixed; bottom: -10vh; pointer-events: none; z-index: 9999; animation: melayangKeAtas linear forwards; opacity: 0.8; }
+        @keyframes melayangKeAtas { 0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 1; } 100% { transform: translateY(-120vh) scale(1.5) rotate(360deg); opacity: 0; } }
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .bintang { position: fixed; background: white; border-radius: 50%; box-shadow: 0 0 12px 2px white; animation: twinkle 1.5s infinite alternate; pointer-events: none; z-index: 9999; }
+        .balon-terbang { position: fixed; background: rgba(255, 255, 255, 0.95); border: 2px solid #ff4d94; padding: 15px 20px; border-radius: 30px; font-weight: 800; color: #ff3385; z-index: 9999; animation: terbangBalon 6s ease-in forwards; pointer-events: none; }
+        @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.2); } }
+        @keyframes terbangBalon { 0% { transform: translateY(100vh) translateX(0); opacity: 1; } 100% { transform: translateY(-20vh) translateX(-30px); opacity: 0; } }
+    </style>
 </head>
 <body>
     <audio id="laguLatar" src="Song/Stargazing.mp3" loop></audio>
 
-    <!-- 1. HALAMAN LOGIN DENGAN KEYPAD -->
+    <!-- 1. HALAMAN LOGIN -->
     <div id="halamanLogin" class="card glass">
         <h2 class="judul-login">Hayo, kamu siapa?! <i class="fa-solid fa-user-secret"></i></h2>
-        <p class="pesan-awal">Area rahasia! Masukkan tanggal lahirmu (DDMMYYYY):</p>
+        <p class="pesan-awal">Area rahasia! Masukkan tanggal lahirmu:</p>
         
-        <!-- Input Password dibuat Readonly agar keyboard bawaan HP tidak muncul -->
-        <input type="password" id="inputPassword" placeholder="********" class="input-pass" readonly>
+        <!-- Tulisan bayangan udah diganti biar kelihatan pas diketik -->
+        <input type="password" id="inputPassword" placeholder="DDMMYYYY" class="input-pass" readonly>
         
-        <!-- Keypad Angka Custom -->
         <div class="keypad">
             <button class="key-btn" onclick="tekanAngka('1')">1</button>
             <button class="key-btn" onclick="tekanAngka('2')">2</button>
@@ -58,13 +155,11 @@
             <p class="sub-judul">Welcome to 21 Club!</p>
         </div>
 
-        <!-- ⏱️ KAPSUL WAKTU -->
         <div class="waktu-bersama glass-panel">
             <p class="waktu-judul"><i class="fa-solid fa-hourglass-half"></i> Kita udah bareng selama:</p>
             <div id="counter" class="counter-box">Memuat waktu...</div>
         </div>
 
-        <!-- 📸 GALERI POLAROID HD -->
         <div class="galeri">
             <div class="polaroid"><img src="Image/foto2.jpeg" alt="Foto ADYNN 1"><p class="caption">Gemes banget! <i class="fa-solid fa-heart"></i></p></div>
             <div class="polaroid"><img src="Image/foto3.jpeg" alt="Foto ADYNN 2"><p class="caption">Favorit najo! <i class="fa-solid fa-star"></i></p></div>
@@ -72,7 +167,6 @@
 
         <div class="divider"></div>
 
-        <!-- 🌡️ MESIN PENGUKUR CINTA -->
         <div class="love-meter-box glass-panel">
             <h3 class="section-title"><i class="fa-solid fa-temperature-arrow-up"></i> Mesin Pengukur Cinta</h3>
             <p class="sub-text">Seberapa besar cinta Najo ke ADYNN?</p>
@@ -83,7 +177,6 @@
 
         <div class="divider"></div>
 
-        <!-- 🎁 KOTAK KADO VIRTUAL -->
         <div class="kado-box glass-panel">
             <h3 class="section-title"><i class="fa-solid fa-box"></i> Tap to Unbox!</h3>
             <p class="sub-text">Klik kadonya 5 kali untuk buka hadiah utama!</p>
@@ -93,7 +186,6 @@
 
         <div class="divider"></div>
 
-        <!-- 💌 AMPLOP -->
         <div class="amplop-box">
             <h3 class="section-title"><i class="fa-solid fa-envelope-open-text"></i> Open When...</h3>
             <div class="amplop-grid">
@@ -106,7 +198,6 @@
 
         <div class="divider"></div>
 
-        <!-- 📝 COUPLE BUCKET LIST -->
         <div class="bucket-box glass-panel">
             <h3 class="section-title"><i class="fa-solid fa-list-check"></i> Our Bucket List</h3>
             <p class="sub-text">Mimpi kita ke depannya, centang kalau setuju!</p>
@@ -120,7 +211,6 @@
 
         <div class="divider"></div>
 
-        <!-- 🤔 MINI KUIS -->
         <div class="kuis-box interaktif-box glass-panel">
             <h3 class="section-title" style="margin-bottom: 5px;"><i class="fa-solid fa-circle-question"></i> Mini Kuis</h3>
             <p class="pertanyaan">Siapa yang ngambeknya paling lucu dan gemesin?</p>
@@ -133,7 +223,6 @@
 
         <div class="divider"></div>
 
-        <!-- 🎈 BALON HARAPAN -->
         <div class="harapan-box glass-panel">
             <h3 class="section-title"><i class="fa-solid fa-paper-plane"></i> Make A Wish!</h3>
             <input type="text" id="inputHarapan" class="input-harapan" placeholder="Harapanku adalah...">
@@ -142,7 +231,6 @@
 
         <div class="divider"></div>
 
-        <!-- 🪙 KARTU GOSOK -->
         <div class="gosok-box">
             <h3 class="section-title"><i class="fa-solid fa-coins"></i> Kartu Gosok Spesial</h3>
             <p class="sub-text">Gosok kotak abu-abu di bawah pakai jarimu!</p>
@@ -155,7 +243,6 @@
 
         <div class="divider"></div>
 
-        <!-- 🏃‍♂️ TOMBOL JAHIL -->
         <div class="interaktif-box glass-panel">
             <p class="pertanyaan">ADYNN sayang banget nggak sama Najo? <i class="fa-solid fa-face-grin-stars"></i></p>
             <div class="btn-group">
@@ -167,7 +254,6 @@
 
         <div class="divider"></div>
 
-        <!-- 🎵 SPOTIFY -->
         <div class="spotify-box">
             <h3 class="section-title"><i class="fa-solid fa-headphones"></i> Lagu Memori Kita</h3>
             <iframe style="border-radius:12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);" src="https://open.spotify.com/embed/playlist/5bsFmtfLLr7VSKSpxKXqoT?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
@@ -175,13 +261,12 @@
 
         <div class="divider"></div>
 
-        <!-- ✉️ SURAT RAHASIA -->
         <button id="btnSurat" class="btn-surprise" style="margin-top: 10px; margin-bottom:20px;">Buka Surat Rahasia <i class="fa-solid fa-envelope"></i></button>
     </div>
 
     <!-- MODAL SURAT -->
     <div id="modalSurat" class="modal tersembunyi">
-        <div class="modal-content glass">
+        <div class="modal-content">
             <span class="close-btn" id="closeSurat">&times;</span>
             <h2>Untuk ADYNN <i class="fa-solid fa-heart"></i></h2>
             <p class="isi-surat">
@@ -194,6 +279,262 @@
     </div>
 
     <div id="animasiContainer"></div>
-    <script src="script.js"></script>
+
+    <script>
+        // ================= SEMUA JAVASCRIPT GABUNG DI SINI =================
+        const halamanLogin = document.getElementById('halamanLogin');
+        const halamanTransisi = document.getElementById('halamanTransisi');
+        const halamanUtama = document.getElementById('halamanUtama');
+        const tombolLogin = document.getElementById('tombolLogin');
+        const tombolPlay = document.getElementById('tombolPlay');
+        const inputPassword = document.getElementById('inputPassword');
+        const pesanError = document.getElementById('pesanError');
+        const lagu = document.getElementById('laguLatar');
+        const animasiContainer = document.getElementById('animasiContainer');
+
+        function tekanAngka(angka) {
+            if (inputPassword.value.length < 8) {
+                inputPassword.value += angka;
+            }
+        }
+        function hapusAngka() {
+            inputPassword.value = inputPassword.value.slice(0, -1);
+        }
+        function hapusSemua() {
+            inputPassword.value = '';
+        }
+
+        tombolLogin.addEventListener('click', function() {
+            if (inputPassword.value === '17092005') {
+                halamanLogin.classList.add('tersembunyi');
+                halamanTransisi.classList.remove('tersembunyi');
+            } else {
+                pesanError.classList.remove('tersembunyi');
+                setTimeout(() => {
+                    pesanError.classList.add('tersembunyi');
+                    inputPassword.value = ''; 
+                }, 2500);
+            }
+        });
+
+        tombolPlay.addEventListener('click', function() {
+            halamanTransisi.classList.add('tersembunyi');
+            halamanUtama.classList.remove('tersembunyi');
+            lagu.play().catch(e => console.log("Audio diblokir browser"));
+            initScratchCard(); 
+            mulaiAnimasiLatar(); 
+        });
+
+        const btnGelap = document.getElementById('btnGelap');
+        let intervalBintang;
+
+        btnGelap.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                btnGelap.innerHTML = '<i class="fa-solid fa-sun"></i> Mode Siang';
+                intervalBintang = setInterval(buatBintang, 300);
+            } else {
+                btnGelap.innerHTML = '<i class="fa-solid fa-moon"></i> Mode Malam';
+                clearInterval(intervalBintang);
+                document.querySelectorAll('.bintang').forEach(b => b.remove());
+            }
+        });
+
+        function buatBintang() {
+            const bintang = document.createElement('div');
+            bintang.classList.add('bintang');
+            bintang.style.left = Math.random() * 100 + 'vw';
+            bintang.style.top = Math.random() * 100 + 'vh';
+            const ukuran = Math.random() * 3 + 1;
+            bintang.style.width = ukuran + 'px';
+            bintang.style.height = ukuran + 'px';
+            animasiContainer.appendChild(bintang);
+            setTimeout(() => bintang.remove(), 4000);
+        }
+
+        const tanggalJadian = new Date('2026-01-01T00:00:00').getTime(); 
+        setInterval(function() {
+            const selisih = new Date().getTime() - tanggalJadian;
+            const hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
+            const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
+            const detik = Math.floor((selisih % (1000 * 60)) / 1000);
+            document.getElementById('counter').innerHTML = `${hari} Hari, ${jam} Jam, ${menit} Menit, ${detik} Detik <i class="fa-solid fa-heart" style="color:#ff3385;"></i>`;
+        }, 1000);
+
+        const btnMeter = document.getElementById('btnMeter');
+        const progressFill = document.getElementById('progressFill');
+        const meterTeks = document.getElementById('meterTeks');
+
+        btnMeter.addEventListener('click', function() {
+            btnMeter.disabled = true;
+            meterTeks.classList.add('tersembunyi');
+            let width = 0;
+            progressFill.style.width = '0%';
+            
+            let interval = setInterval(() => {
+                width += Math.floor(Math.random() * 15) + 5; 
+                if (width >= 100) {
+                    clearInterval(interval);
+                    progressFill.style.width = '100%';
+                    progressFill.innerText = '100%';
+                    
+                    setTimeout(() => {
+                        document.querySelector('.love-meter-box').classList.add('meledak');
+                        progressFill.style.width = '100%'; 
+                        progressFill.innerText = '3000% !!!';
+                        meterTeks.innerHTML = '<i class="fa-solid fa-bomb"></i> ERROR: Kapasitas mesin meledak!<br>Cinta Najo terlalu besar dan gak bisa dihitung! <i class="fa-solid fa-heart"></i>';
+                        meterTeks.classList.remove('tersembunyi');
+                    }, 500);
+                } else {
+                    progressFill.style.width = width + '%';
+                    progressFill.innerText = width + '%';
+                }
+            }, 150);
+        });
+
+        const boxKado = document.getElementById('boxKado');
+        const kadoTeks = document.getElementById('kadoTeks');
+        let klikKado = 0;
+
+        boxKado.addEventListener('click', function() {
+            if (klikKado >= 5) return; 
+            
+            klikKado++;
+            boxKado.classList.remove('shake');
+            void boxKado.offsetWidth; 
+            boxKado.classList.add('shake');
+            
+            if (klikKado === 5) {
+                setTimeout(() => {
+                    boxKado.innerHTML = '<i class="fa-solid fa-box-open"></i>';
+                    boxKado.classList.remove('shake');
+                    kadoTeks.classList.remove('tersembunyi');
+                    for(let i=0; i<15; i++) { setTimeout(buatConfetti, i*100); }
+                }, 300);
+            }
+        });
+
+        function buatConfetti() {
+            const confetti = document.createElement('div');
+            const iconList = ['<i class="fa-solid fa-star"></i>', '<i class="fa-solid fa-heart"></i>', '<i class="fa-solid fa-music"></i>', '<i class="fa-solid fa-ticket"></i>'];
+            const colorList = ['#ff4d94', '#f0c420', '#4d94ff', '#33ff85'];
+            
+            confetti.innerHTML = iconList[Math.floor(Math.random() * iconList.length)];
+            confetti.style.color = colorList[Math.floor(Math.random() * colorList.length)];
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = '-10vh';
+            confetti.style.fontSize = '24px';
+            confetti.style.zIndex = '9999';
+            confetti.style.transition = 'transform 2s ease-out, top 2s ease-in';
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.style.top = '100vh';
+                confetti.style.transform = `rotate(${Math.random()*360}deg)`;
+            }, 50);
+            setTimeout(() => confetti.remove(), 2050);
+        }
+
+        const checkboxes = document.querySelectorAll('.bucket-list input[type="checkbox"]');
+        checkboxes.forEach(box => {
+            box.addEventListener('change', function() {
+                const label = this.nextElementSibling;
+                if(this.checked) { label.classList.add('dicoret'); } 
+                else { label.classList.remove('dicoret'); }
+            });
+        });
+
+        function jawabKuis(jawaban) {
+            const kuisTeks = document.getElementById('kuisTeks');
+            kuisTeks.classList.remove('tersembunyi');
+            if (jawaban === 'adynn') {
+                kuisTeks.innerHTML = '<i class="fa-solid fa-circle-check"></i> Bener banget! Ngambeknya ADYNN itu gemesin pengen gigit! <i class="fa-solid fa-face-grin-hearts"></i>';
+            } else {
+                kuisTeks.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Dih masa sih Najo? Coba ngaca dulu wleee <i class="fa-solid fa-face-grin-tongue-wink"></i>';
+            }
+        }
+
+        function bukaAmplop(kondisi) {
+            const pesan = document.getElementById('pesanAmplop');
+            pesan.classList.remove('tersembunyi');
+            if (kondisi === 'kangen') pesan.innerHTML = 'Jangan kangen dong! Langsung chat atau telpon najo aja sekarang, okee? <i class="fa-solid fa-heart"></i>';
+            else if (kondisi === 'sedih') pesan.innerHTML = 'Hei orang paling hebat, gapapa kok capek. Najo selalu di sini buat dengerin ceritamu. You did great! <i class="fa-solid fa-star"></i>';
+            else if (kondisi === 'peluk') pesan.innerHTML = '*Sending virtual hugs!* <i class="fa-solid fa-hands-holding-child"></i> Nanti ketemu najo peluk beneran ya!';
+        }
+
+        document.getElementById('btnTerbang').addEventListener('click', function() {
+            const input = document.getElementById('inputHarapan');
+            if (input.value.trim() === '') return alert("Tulis harapanmu dulu dong!");
+            const balon = document.createElement('div');
+            balon.classList.add('balon-terbang');
+            balon.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ' + input.value;
+            balon.style.left = (Math.random() * 50 + 10) + 'vw';
+            animasiContainer.appendChild(balon);
+            input.value = '';
+            setTimeout(() => balon.remove(), 6000);
+        });
+
+        function initScratchCard() {
+            const canvas = document.getElementById('scratchCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#a0a0a0'; ctx.fillRect(0, 0, 250, 250);
+            ctx.font = '900 20px Poppins'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center'; ctx.fillText('GOSOK DI SINI!', 125, 125);
+            let isDrawing = false;
+            function hapusCanvas(e) {
+                if (!isDrawing) return; e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+                const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
+            }
+            canvas.addEventListener('mousedown', () => isDrawing = true); canvas.addEventListener('mouseup', () => isDrawing = false); canvas.addEventListener('mousemove', hapusCanvas);
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; hapusCanvas(e); }); canvas.addEventListener('touchend', () => isDrawing = false); canvas.addEventListener('touchmove', hapusCanvas);
+        }
+
+        const btnNggak = document.getElementById('btnNggak');
+        function kabur() {
+            btnNggak.style.position = 'fixed';
+            btnNggak.style.left = `${Math.max(10, Math.random() * (window.innerWidth - 100))}px`;
+            btnNggak.style.top = `${Math.max(10, Math.random() * (window.innerHeight - 50))}px`;
+            btnNggak.style.zIndex = '999';
+        }
+        btnNggak.addEventListener('mouseenter', kabur);
+        btnNggak.addEventListener('touchstart', (e) => { e.preventDefault(); kabur(); });
+        
+        document.getElementById('btnSayang').addEventListener('click', function() {
+            document.getElementById('teksResponSayang').innerHTML = 'YAY! Najo juga sayang banget sama ADYNN! <i class="fa-solid fa-heart"></i>';
+            document.getElementById('teksResponSayang').classList.remove('tersembunyi');
+            btnNggak.style.display = 'none';
+        });
+
+        document.getElementById('btnSurat').addEventListener('click', () => document.getElementById('modalSurat').classList.remove('tersembunyi'));
+        document.getElementById('closeSurat').addEventListener('click', () => document.getElementById('modalSurat').classList.add('tersembunyi'));
+
+        function mulaiAnimasiLatar() {
+            const iconList = [
+                '<i class="fa-solid fa-heart"></i>', 
+                '<i class="fa-solid fa-star"></i>', 
+                '<i class="fa-solid fa-moon"></i>', 
+                '<i class="fa-solid fa-music"></i>', 
+                '<i class="fa-solid fa-gem"></i>'
+            ];
+            const colorList = ['#ff4d94', '#ff75a0', '#ffd1dc', '#f0c420', '#fff'];
+
+            setInterval(() => {
+                const item = document.createElement('div');
+                item.classList.add('floating-item');
+                item.innerHTML = iconList[Math.floor(Math.random() * iconList.length)];
+                item.style.color = colorList[Math.floor(Math.random() * colorList.length)];
+                item.style.left = Math.random() * 100 + 'vw';
+                item.style.fontSize = (Math.random() * 15 + 12) + 'px';
+                item.style.animationDuration = (Math.random() * 4 + 5) + 's';
+                animasiContainer.appendChild(item);
+                setTimeout(() => item.remove(), 9000);
+            }, 400); 
+        }
+    </script>
 </body>
 </html>
